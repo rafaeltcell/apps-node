@@ -1,0 +1,23 @@
+version: '2'
+volumes:
+  node6-node_modules:
+services:
+  express_cluster_web:
+    build: .
+    command: sh -c "npm prune && npm install && node app.js"
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - node6-node_modules:/app/node_modules
+
+  tcell_local_express_cluster_web:
+    build: .
+    command: sh -c "npm prune && npm install /tcellagent_src && npm install && node app.js"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../nodeagent-tcell:/tcellagent_src
+      - ./express-cluster:/app
+      - ./tcell_agent.config:/app/tcell_agent.config
+      - node6-node_modules:/app/node_modules
